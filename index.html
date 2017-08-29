@@ -26,6 +26,16 @@
         .qw {
             width: 75%;
         }
+
+        @media all {
+                    .page-break { display: none;  }
+
+        }
+
+        @media print {
+                    .page-break { display: block; page-break-before: always;  }
+
+        }
     </style>
 </head>
 
@@ -35,228 +45,30 @@
     <pre id="content"></pre>
     <div id="body" ></div>
     <table>
+        <!-- TODO: set bordercolor #000000, #D3D3D3 -->
         <tbody>
+            {{#each rows}}
             <tr>
+                {{#each this}}
                 <td class="hw">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">
-                                    Mon
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="qw">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td class="qw">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td>Sharp</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">TODO</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    {{> dayCell}}
                 </td>
-                <td class="hw">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">
-                                    Tue
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="qw">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td class="qw">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td>Sharp</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">TODO</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
+                {{/each}}
             </tr>
+            {{/each}}
             <tr>
-                <td class="hw">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">
-                                    Wed
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="qw">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td class="qw">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td>Sharp</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">TODO</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-                <td class="hw">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">
-                                    Thur
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="qw">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td class="qw">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td>Sharp</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">TODO</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td class="hw">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">
-                                    Fri
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="qw">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td class="qw">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td>Sharp</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">TODO</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-                <td class="hw">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">
-                                    Sat
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="qw">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td class="qw">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td>Sharp</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">TODO</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
         </tbody>
     </table>
+    </table>
 </body>
-    <script src="oauth.js"></script>
+
+    <!--
+        TODO: when get templates down, precompile and include dist-core.js
+    <script src="node_modules/dustjs-linkedin/dist/dust-full.js">
+    -->
+    <script src="node_modules/handlebars/dist/handlebars.min.js"></script>
     <script src="makeCalendar.js"></script>
+    <script src="oauth.js"></script>
 <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()">
 </script>
 
