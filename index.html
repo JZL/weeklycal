@@ -2,6 +2,9 @@
 
 <head>
     <style>
+body{
+    font-family: monospace;
+}
         table {
             border: 1px solid black;
         }
@@ -43,33 +46,77 @@
     <button id="authorize-button" style="display: none;">Authorize</button>
     <button id="signout-button" style="display: none;">Sign Out</button>
     <pre id="content"></pre>
-    <div id="body" ></div>
-    <table>
-        <!-- TODO: set bordercolor #000000, #D3D3D3 -->
-        <tbody>
-            {{#each rows}}
-            <tr>
+    <script src="node_modules/handlebars/dist/handlebars.min.js"></script>
+    <script>
+Handlebars.registerHelper('mod2', function(i){
+    console.log("index: "+i + "%2 "+i%2)
+        if(i%2 == 0){
+            return null
+        }else{
+            return 1
+        }
+    return parseInt(i)%2
+})
+    </script>
+    <script id="maintable_template" type="text/x-handlebars-template">
+        <table>
+            <!-- TODO: set bordercolor #000000, #D3D3D3 -->
+            <tbody>
+                <tr>
                 {{#each this}}
-                <td class="hw">
-                    {{> dayCell}}
-                </td>
+                        <td valign="top" class="hw">
+                            {{> dayCell}}
+                        </td>
+                    {{#if (mod2 @index) }}
+                    </tr>
+                    {{/if}}
                 {{/each}}
-            </tr>
-            {{/each}}
-            <tr>
-        </tbody>
-    </table>
-    </table>
+            </tbody>
+        </table>
+    </script>
+    <script id="dayCell_partial" type="text/x-handlebars-templaye">
+<table>
+    <tbody>
+        <tr>
+            <td valign="top" style="text-align: center;" colspan="2">
+                {{this.dateString}}
+            </td>
+        </tr>
+        <tr>
+            <td valign = "top" class="qw">
+                <table>
+                    <tbody>
+                    {{#each this.flat.timedEvent}}
+                        <tr>
+                            <td>{{{this.[0]}}}</td>
+                            <td class="qw">{{{this.[1]}}}</td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </td>
+            <td>{{sharples}}</td>
+        </tr>
+        <tr>
+            <td style="text-align: center;" colspan="2">
+            {{todo}}
+            </td>
+        </tr>
+    </tbody>
+</table>
+</script>
+    <div id="week1"></div>
 </body>
 
     <!--
         TODO: when get templates down, precompile and include dist-core.js
     <script src="node_modules/dustjs-linkedin/dist/dust-full.js">
     -->
-    <script src="node_modules/handlebars/dist/handlebars.min.js"></script>
+<script id="dayCell_partial" type="text/x-handlebars-template" src="partials/dayCell.hbs"></script>
     <script src="makeCalendar.js"></script>
     <script src="oauth.js"></script>
 <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()">
 </script>
+
 
 </html>
