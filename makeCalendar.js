@@ -14,7 +14,7 @@ var CALENDAR_IDS = {
 }
 
 var START_DATE = new Date();
-var INDENT_SPACES = "    "
+var INDENT_SPACES = "&nbsp;".repeat(4);
 
 
 var BOLD_CALS = ["todo", "unusual", "due"]
@@ -24,7 +24,25 @@ var newLines = "\n\n\n\n\n\n\n\n\n\n"
 var hourTable = [[8,""],[9,""],[10,""],[11,""],[12,""],[1,""],[2,""],[3,""],[4,""],[5,""]]
 var longestLength=16
 
-var handleBarsContext = [];
+function makeWeeklyCalendar(twoWeekEvents, mondays){
+    var dayCell_src = document.getElementById("dayCell_partial").innerHTML;
+    var dayCell_template = Handlebars.compile(dayCell_src);
+
+    Handlebars.registerPartial('dayCell', dayCell_template);
+
+    var mainTable_src = document.getElementById("maintable_template").innerHTML
+    var mainTable_template = Handlebars.compile(mainTable_src);
+
+
+    console.log("starting")
+        console.log(twoWeekEvents);
+    //TODO make var week1
+    week1 = makePaper(twoWeekEvents[0],  mondays[0], false);
+
+    var week1HTML = mainTable_template(week1);
+    document.getElementById("week1").innerHTML = week1HTML;
+    //var week2 = makePaper(twoWeekEvents[1],   mondays[1], true); //for backpage, true = condensed
+}
 /*[
   [week1 typeof day],
   [week2 typeof day],
@@ -69,12 +87,16 @@ function timedEvent(summary, isBold, dates){ //times = [startTime, endTime]
         return getHM(this.endHM);
     }
 
-    this.toHTMLString = function(level, startOrEnd){
+    this.setIndentLevel = function(level){
+        this.indentLevel = level;
+    }
+
+    this.toHTMLString = function(startOrEnd){
         var arrow;
         if(startOrEnd == 0){
-            arrow = "△" 
+            arrow = "\u25BD"  //upwards arrow https://www.compart.com/en/unicode/U+25BD
         }else if(startOrEnd == 1){
-            arrow = "▽"
+            arrow = "\u25b3" //downward arrow https://www.compart.com/en/unicode/U+25B3
         }
         var min;
         if(startOrEnd == 0){
@@ -82,18 +104,22 @@ function timedEvent(summary, isBold, dates){ //times = [startTime, endTime]
         }else if(startOrEnd == 1){
             min = this.endHM%100;
         }else{
-            min = ":00" 
+            //If printing a timed event in due/todo
+           return Math.floor(this.startHM/100)+":"+toPaddedStr(this.startHM%100)+" "+
+               Math.floor(this.endHM/100)+":"+toPaddedStr(this.endHM%100)+" "+
+               this.summary;
         }
         var str = "";
         //If default param (only way =2), then is in due/todo so want full hour
         //and no arrows
-        str += ":"+min+INDENT_SPACES.repeat(level)+" "+arrow+this.summary;
+        str += ":"+toPaddedStr(min)+INDENT_SPACES.repeat(this.indentLevel)+"&nbsp;"+arrow+this.summary;
         if(this.bold){
             return "<b>"+str+"</b>";
         }else{
             return str;
         }
     }
+
 
 }
 
@@ -102,7 +128,13 @@ function day(date){
 
     this.date = date;
     this.dow = days_of_weekArr[this.date.getDay()];
+    this.getDateStr = function(){
+        console.log(this.date);
+        return this.dow+" "+ (this.date.getMonth()+1)+"/"+this.date.getDate();
+    }
+    this.dateString = this.getDateStr();
 
+    this.flat = {}; //store all the flattened (final) objecta
     this.todo = [];
     this.due = [];
     this.allDayEvents = []; //normal events
@@ -139,14 +171,10 @@ function day(date){
             this.timedEventTimes.lastEnd = startEndHours[1]
         }
     }
-    this.getDateStr = function(){
-        console.log(this.date);
-        return this.dow+" "+ (this.date.getMonth()+1)+"/"+this.date.getDate();
-    }
-    this.makeFlat = function(){
-        this.flattenTimedEvents();
-        this.flatDue            = this.flattenDue();
-        this.flatTODO           = this.flattenTODO();
+    this.makeFlat = function(minimizeSize){
+        this.flattenTimedEvents(minimizeSize);
+        this.flat.due            = this.flattenDue();
+        this.flat.TODO           = this.flattenTODO();
     }
     this.flattenDue = function(){
         return flattenDueOrTODO("Due", this.due)
@@ -161,20 +189,40 @@ function day(date){
         var str = indent+doOrTodoStr+": ";
         for(var i in  doOrTodo){
             //Overloading should take care if it is an hourly or daily event
-            str += indent+INDENT_SPACES+"□ "+
+            //square box  https://www.compart.com/en/unicode/U+25A1
+            str += indent+INDENT_SPACES+"\u25A1 "+
                 doOrTodo[i].toHTMLString();
         }
         return str;
     }
 
 
-    this.flattenTimedEvents = function(){
-        this.flatTimeEvents = []; //2D array of [hour, str: description (:MM SUMMARY)]
+
+    this.flattenAllDay = function(){
+        var allDayStr = "";
+        for(var i in this.allDayEvents){
+            allDayStr+=this.allDayEvents[i].toHTMLString()+"<br>";
+        }
+        allDayStr = allDayStr.replace(/\<br\>$/, "");
+        return allDayStr;
+    }
+
+    this.flattenTimedEvents = function(minimizeSize){
+        this.flat.timedEvent = []; //2D array of [hour, str: description (:MM SUMMARY)]
+
+        //infinity (incomplete: https://www.compart.com/en/unicode/U+29DC)
+        //normal: 
+        this.flat.timedEvent.push(["\u29DC", this.flattenAllDay()])
+
         //Sort starts and ends by start/endHM and length secondarily. In
         //ends, want longest to bookend (so sort descending and then ascending
         //Need [0] so get timedEvent, not 0/1 for start/end
-        this.timedEventTimes.starts.sort(function(x, y){return ((x[0].startHM-y[0].startHM)||(-x[0].len+y[0].len))});
-        this.timedEventTimes.ends  .sort(function(x, y){return ((x[0].endHM-  y[0].endHM  )||( x[0].len-y[0].len))});
+        
+        //Sort by start/endTime, if equal, sort by how long the event is. Want
+        //the short events at the bottom of the startTimes and the top of the
+        //endTimes. If both equal, just want to be opposite
+        this.timedEventTimes.starts.sort(function(x, y){return ((x[0].startHM-y[0].startHM)||(-x[0].len+y[0].len))|| 1});
+        this.timedEventTimes.ends  .sort(function(x, y){return ((x[0].endHM  -y[0].endHM  )||( x[0].len-y[0].len))||-1});
 
 
         //ends first becaus want them to be first in every hour
@@ -189,45 +237,58 @@ function day(date){
         var numEventsDeep = 0; 
         for(var hour = startHour; hour<=endHour; hour++){
             var hourEvents = startAndEndTimes[hour]
+                //No event for this hour
                 if(!hourEvents){
                     //Should always be positive
                     if(numEventsDeep < 0){
                         throw "That's weird, numEventsDeep shouldn't be negative"
                     }
-                    if(numEventsDeep != 0){
-                        //Empty hour, needs "|"
-                        this.flatTimeEvents.push([hour, INDENT_SPACES.repeat(numEventsDeep)+"|"])
+                    var summaryStr = "";
+                    if(minimizeSize == false){
+                        if(numEventsDeep != 0){
+                            //Empty hour, needs "|"
+                            summaryStr+=INDENT_SPACES.repeat(numEventsDeep)+"|";
+                        }
+                        this.flat.timedEvent.push([armyToRegular(hour), summaryStr])
                     }
                 }else{
                     var hourEventStr = "";
                     minKeys = Object.keys(hourEvents).sort(function(x, y){
-                        if(x == "netEvents" || y == "netEvents"){
-                            return -1; //just skip
-                        }
                         return (parseInt(x) - parseInt(y))
-
                     })
 
                     for(var z = 0; z<minKeys.length;z++){
-                        if(minKeys[z] == "netEvents"){
-                            continue;
-                        }
                         var minEvents = hourEvents[minKeys[z]];
                         for(var i = 0; i<minEvents.length;i++){
                             if(minEvents[i][1] == 0){
                                 //start
+                                //Want to go before ++ because, for instance,
+                                //the first event should be at 0, not 1
+                                minEvents[i][0].setIndentLevel(numEventsDeep);
                                 numEventsDeep++
                             }else{
                                 numEventsDeep-- 
                             }
-                            hourEventStr+=minEvents[i][0].toHTMLString(numEventsDeep, minEvents[i][1])+"\n";
+                            hourEventStr+=minEvents[i][0].toHTMLString(minEvents[i][1])+"<br>";
                         }
-                        this.flatTimeEvents.push([hour, hourEventStr]);
                     }
+                    this.flat.timedEvent.push([armyToRegular(hour), hourEventStr]);
                 }
         }
     }
 
+    function armyToRegular(hour){
+        if(hour == 12){
+            return "12";
+        }else{
+            var normalHour = hour%12;
+            if(normalHour<10){
+                return "&nbsp;"+normalHour;
+            }else{
+                return normalHour.toString();
+            }
+        }
+    }
     //Combine end 1st then start
     function combineStartAndEnd(startsAndEnds){
         var result = {}
@@ -240,32 +301,18 @@ function day(date){
                 HMs = startsAndEnds[i][0].getEndHM(); //hour, min
             }
             if( result[HMs[0]]== null){
-                result[HMs[0]]= {netEvents: 0}; //netEvents keeps track per hour if there is an ongoing event
+                result[HMs[0]]= {}; 
             }
 
-            if(startsAndEnds[i][1] == 0){
-                result[HMs[0]].netEvents++
-            }else{
-                result[HMs[0]].netEvents--
-            }
-
-            result[HMs[0]][HMs[1]];
             if(result[HMs[0]][HMs[1]]== null){
                result[HMs[0]][HMs[1]] =  [];
             }
             result[HMs[0]][HMs[1]].push(startsAndEnds[i])
         }
-        console.log(1);
         return result;
     }
 }
 
-function makeWeeklyCalendar(twoWeekEvents, mondays){
-    console.log("starting")
-        console.log(twoWeekEvents)
-    makePaper(twoWeekEvents[0],  mondays[0], false);
-    makePaper(twoWeekEvents[1],   mondays[1], true); //for backpage, true = condensed
-}
 
 function makePaper(events, startDate, minimizeSize) {
     console.log("make paper")
@@ -279,7 +326,7 @@ function makePaper(events, startDate, minimizeSize) {
         if(BOLD_CALS.indexOf(gCalEvent.cal)!=-1||
                 gCalEvent.event.summary[0] == "!"){
             bold = true; 
-            gCalEvent.event.summary.replace(/^!*/, "");
+            gCalEvent.event.summary = gCalEvent.event.summary.replace(/^!*/, "");
         }
 
         var event = new timedEvent(gCalEvent.event.summary, bold, gCalEvent.startEnd);
@@ -301,7 +348,7 @@ function makePaper(events, startDate, minimizeSize) {
         var bold = false;
         if(BOLD_CALS.indexOf(gCalEvent.cal)!=-1||gCalEvent.event.summary[0] == "!"){
             bold = true; 
-            gCalEvent.event.summary.replace(/^!*/, "");
+            gCalEvent.event.summary = gCalEvent.event.summary.replace(/^!*/, "");
         }
 
         var event = new Event(gCalEvent.event.summary, bold)
@@ -322,10 +369,10 @@ function makePaper(events, startDate, minimizeSize) {
         console.log("flattened: ");
     for(var i = 0; i<7; i++){
         //Takes the array of events -> flattened array of hours
-        week[i].makeFlat();
+        week[i].makeFlat(minimizeSize);
         console.log(week[i])
-        w = week
     }
+    return week
     //handleBarsContext.push(week);
 }
 
@@ -361,11 +408,18 @@ function armyToNormalTime(hour, padNums){
         return 12
     }else{
         if(padNums){
-            return pad(hour%12, 2, " ")
+            return pad(hour%12, 2, "&nbsp;")
         }else{
             return hour%12
         }
     }
+}
+function toPaddedStr(int){
+    var str = int.toString();
+    if(int < 10){
+        str = "0"+str;
+    }
+    return str;
 }
 //var hourTable = []
 //for(var i = 8; i<=12; i++){
