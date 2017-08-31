@@ -63,9 +63,11 @@ function makeWeeklyCalendar(twoWeekEvents, mondays){
         console.log(twoWeekEvents);
     //TODO make var week1
     week1 = makePaper(twoWeekEvents[0],  mondays[0], false);
+    week2 = makePaper(twoWeekEvents[1],  mondays[1], true);
 
     var week1HTML = mainTable_template(week1);
-    document.getElementById("week1").innerHTML = week1HTML;
+    var week2HTML = mainTable_template(week2);
+    document.getElementById("week1").innerHTML = week1HTML+"<div class='page-break'></div>"+week2HTML;
     //var week2 = makePaper(twoWeekEvents[1],   mondays[1], true); //for backpage, true = condensed
 }
 /*[
@@ -229,9 +231,10 @@ function day(date){
     this.flattenAllDay = function(){
         var allDayStr = "";
         for(var i in this.allDayEvents){
-            allDayStr+=this.allDayEvents[i].toHTMLString()+"<br>";
+            allDayStr+="&nbsp"+this.allDayEvents[i].toHTMLString()+"<br>";
         }
-        allDayStr = allDayStr.replace(/\<br\>$/, "");
+        allDayStr+="&nbsp;"; //add space so have empty line
+        //allDayStr = allDayStr.replace(/\<br\>$/, "");
         return allDayStr;
     }
 

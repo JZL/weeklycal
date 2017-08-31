@@ -2,9 +2,13 @@
 
 <head>
     <style>
-body{
+*{
     font-family: monospace;
+    font-size: 10px;
 }
+        body{
+            margin:0px;
+        }
         table {
             border-collapse: collapse;
             <!--
@@ -15,6 +19,7 @@ body{
         
         td {
             vertical-align: top;
+            padding: 0px;
         }
         
         #mainTable > tbody > tr > td {
@@ -53,16 +58,23 @@ body{
         }
 
         @media print {
+                    .not_print{
+                        display: none;
+                    }
                     .page-break { display: block; page-break-before: always;  }
+                    #auth{
+                        display: none;
+                    }
 
         }
     </style>
 </head>
 
 <body>
-    <button id="authorize-button" style="display: none;">Authorize</button>
-    <button id="signout-button" style="display: none;">Sign Out</button>
-    <pre id="content"></pre>
+    <div id="auth">
+        <button id="authorize-button" style="display: none;">Authorize</button>
+        <button id="signout-button" style="display: none;">Sign Out</button>
+    </div>
     <script src="node_modules/handlebars/dist/handlebars.min.js"></script>
     <script>
     </script>
@@ -87,6 +99,9 @@ body{
                 {{/each}}
             </tbody>
         </table>
+        <div class="not_print">
+            <br><br>
+        </div>
     </script>
     <script id="dayCell_partial" type="text/x-handlebars-template">
         <table>
