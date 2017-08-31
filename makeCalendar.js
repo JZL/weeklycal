@@ -24,14 +24,19 @@ var newLines = "\n\n\n\n\n\n\n\n\n\n"
 var hourTable = [[8,""],[9,""],[10,""],[11,""],[12,""],[1,""],[2,""],[3,""],[4,""],[5,""]]
 var longestLength=16
 
+function Handlebars_compileFromID(id){
+    return Handlebars.compile(document.getElementById(id).innerHTML);
+}
+
+function Handlebars_registerPartialFromID(name, id){
+    var template = Handlebars_compileFromID(id);
+    Handlebars.registerPartial(name, template);
+}
 function makeWeeklyCalendar(twoWeekEvents, mondays){
-    var dayCell_src = document.getElementById("dayCell_partial").innerHTML;
-    var dayCell_template = Handlebars.compile(dayCell_src);
+    Handlebars_registerPartialFromID("dayCell", "dayCell_partial");
+    Handlebars_registerPartialFromID("hourRow", "hourRow_partial");
 
-    Handlebars.registerPartial('dayCell', dayCell_template);
-
-    var mainTable_src = document.getElementById("maintable_template").innerHTML
-    var mainTable_template = Handlebars.compile(mainTable_src);
+    var mainTable_template = Handlebars_compileFromID("maintable_template")
 
 
     console.log("starting")
