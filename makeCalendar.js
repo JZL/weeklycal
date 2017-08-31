@@ -32,6 +32,27 @@ function Handlebars_registerPartialFromID(name, id){
     var template = Handlebars_compileFromID(id);
     Handlebars.registerPartial(name, template);
 }
+
+//https://stackoverflow.com/a/11252167/999983 but rounded
+function treatAsUTC(date) {
+    var result = new Date(date);
+    result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+    return result.getTime();
+}
+
+function daysBetween(startDate, endDate) {
+    //Need to copy date so don't inadvertandly change
+    var roundStart = new Date(startDate.getTime())
+    var roundEnd =   new Date(endDate  .getTime())
+    roundStart.setHours(0,0,0,0)
+    roundEnd.setHours(0,0,0,0)
+    var millisecondsPerDay = 24 * 60 * 60 * 1000;
+    return Math.round((roundEnd.getTime() - roundStart.getTime())/millisecondsPerDay)
+    /*
+    return ((treatAsUTC(roundEnd) - treatAsUTC(roundStart)) / millisecondsPerDay);
+    */
+}
+
 function makeWeeklyCalendar(twoWeekEvents, mondays){
     Handlebars_registerPartialFromID("dayCell", "dayCell_partial");
     Handlebars_registerPartialFromID("hourRow", "hourRow_partial");
@@ -378,6 +399,7 @@ function makePaper(events, startDate, minimizeSize) {
     []
     ];
     //Only want normal (weekdays)
+    //TODO remove
     w = week
     for(var i = 0; i<6; i++){
         //Takes the array of events -> flattened array of hours
@@ -523,13 +545,6 @@ function pad(n, width, z) {
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
-function convertDateToUTC(date) { 
-    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()); 
-}
-
-function normalizeDate(d){
-    return new Date(new Date(d).setHours(0,0,0,0))
-}
 
 //Always do day addition with this because of DST
 function addDaysTime(date, days){
@@ -548,10 +563,6 @@ function treatAsUTC(date) {
     return result;
 }
 
-function daysBetween(startDate, endDate) {
-    var millisecondsPerDay = 24 * 60 * 60 * 1000;
-    return (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
-}
 
 function listTaskLists() {
     var taskLists = Tasks.Tasklists.list();
