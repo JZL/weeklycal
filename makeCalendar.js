@@ -473,15 +473,6 @@ function toPaddedStr(int){
     }
     return str;
 }
-//var hourTable = []
-//for(var i = 8; i<=12; i++){
-//hourTable.push([i, ""])
-//}
-//for(var i = 1; i<=8; i++){
-//hourTable.push([i, ""])
-//}
-//JSON.stringify(hourTable)
-
 function truncate(str, length){
     //  if(z == 0 && isStart === true){
     //    return bold(str.replace(/^\!/, ""))
@@ -494,45 +485,6 @@ function truncate(str, length){
     }else{
         return str
     }
-}
-
-function bold(str){
-    for(i in boldArr){
-        str = str.replace(boldArr[i][0], boldArr[i][1])
-    }
-    return str
-}
-
-function test(){
-    allCals = CalendarApp.getCalendarById("fjl75not0nhq75hkhm2phkj67o@group.calendar.google.com")
-        //    var allDays = CalendarApp.getCalendarById("jlangli1@swarthmore.edu").getEvents(startDate, new Date(startDateTime+13*msInDay))
-        var allDays = allCals.getEvents(new Date("11/28/2016"), new Date("11/29/2016"))
-        for(var event in allDays){
-            Logger.log(allDays[event].getTitle())
-        }
-}
-
-function addSpaces(startTime, endTime, write){
-
-
-    //if false, is end and then want to change usedTimes arr, else, don't change usedtimes
-    //    [[start, end], "spaces"]
-    //    var usedTimes = []
-
-    for(var p in usedTimes){
-        //    if()
-    }
-}
-
-function compareToSpace(a,b){
-    return (a.substring(0, a.indexOf(" "))).localeCompare(b.substring(0, b.indexOf(" ")));
-}
-
-function compareSecondElem(a, b){
-    return (a[1]).localeCompare(b[1]);
-}
-function testt(){
-    Logger.log(getRandomFont())
 }
 function getRandomFonts(numFonts){
     var resp = UrlFetchApp.fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyCU6bm3mMmZQCn-cbuHa1wzZAu7oh7OlT0").getContentText()
