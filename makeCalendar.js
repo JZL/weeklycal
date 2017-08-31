@@ -14,12 +14,11 @@ var CALENDAR_IDS = {
 }
 
 var START_DATE = new Date();
-var INDENT_SPACES = "&nbsp;".repeat(4);
+var INDENT_SPACES = "&nbsp;".repeat(3);
 
 
 var BOLD_CALS = ["todo", "unusual", "due"]
 
-var MSINDAY = 24*60*60*1000
 var newLines = "\n\n\n\n\n\n\n\n\n\n"
 var hourTable = [[8,""],[9,""],[10,""],[11,""],[12,""],[1,""],[2,""],[3,""],[4,""],[5,""]]
 var longestLength=16
@@ -138,7 +137,7 @@ function timedEvent(summary, isBold, dates){ //times = [startTime, endTime]
         var str = "";
         //If default param (only way =2), then is in due/todo so want full hour
         //and no arrows
-        str += ":"+toPaddedStr(min)+INDENT_SPACES.repeat(this.indentLevel)+"&nbsp;"+arrow+this.summary;
+        str += ":"+toPaddedStr(min)+INDENT_SPACES.repeat(this.indentLevel)+" "+arrow+this.summary;
         if(this.bold){
             return "<b>"+str+"</b>";
         }else{
@@ -212,12 +211,15 @@ function day(date){
 
     function flattenDueOrTODO(doOrTodoStr, doOrTodo){
         var indent = INDENT_SPACES.repeat(5);
-        var str = indent+doOrTodoStr+": ";
+        var str = ""
         for(var i in  doOrTodo){
             //Overloading should take care if it is an hourly or daily event
             //square box  https://www.compart.com/en/unicode/U+25A1
-            str += indent+INDENT_SPACES+"\u25A1 "+
-                doOrTodo[i].toHTMLString();
+            str += (str == "" ? "" :INDENT_SPACES+indent)+"\u25A1 "+
+                doOrTodo[i].toHTMLString()+"<br>";
+        }
+        if(str!=""){
+            str = indent+doOrTodoStr+": "+str;
         }
         return str;
     }
@@ -238,7 +240,10 @@ function day(date){
 
         //infinity (incomplete: https://www.compart.com/en/unicode/U+29DC)
         //normal: 
-        this.flat.timedEvent.push(["\u29DC", this.flattenAllDay()])
+        var flatAllDay = this.flattenAllDay();
+        if(flatAllDay!=""){
+            this.flat.timedEvent.push(["\u29DC", this.flattenAllDay()]);
+        }
 
         //Sort starts and ends by start/endHM and length secondarily. In
         //ends, want longest to bookend (so sort descending and then ascending
@@ -273,7 +278,8 @@ function day(date){
                     if(minimizeSize == false){
                         if(numEventsDeep != 0){
                             //Empty hour, needs "|"
-                            summaryStr+=INDENT_SPACES.repeat(numEventsDeep)+"|";
+                            //3 from ":XX "
+                            summaryStr+="&nbsp".repeat(4)+INDENT_SPACES.repeat(numEventsDeep-1)+"|";
                         }
                         this.flat.timedEvent.push([armyToRegular(hour), summaryStr])
                     }
