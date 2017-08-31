@@ -129,6 +129,7 @@ function timedEvent(summary, isBold, dates){ //times = [startTime, endTime]
 }
 
 function day(date){
+    this.flat = {}; //store all the flattened (final) objecta
     var days_of_weekArr =  ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
 
     this.date = date;
@@ -137,9 +138,8 @@ function day(date){
         console.log(this.date);
         return this.dow+" "+ (this.date.getMonth()+1)+"/"+this.date.getDate();
     }
-    this.dateString = this.getDateStr();
+    this.flat.dateString = this.getDateStr();
 
-    this.flat = {}; //store all the flattened (final) objecta
     this.todo = [];
     this.due = [];
     this.allDayEvents = []; //normal events
@@ -372,12 +372,31 @@ function makePaper(events, startDate, minimizeSize) {
             }
     }
         console.log("flattened: ");
-    for(var i = 0; i<7; i++){
+    var Week2D= [
+    [],
+    [],
+    []
+    ];
+    //Only want normal (weekdays)
+    w = week
+    for(var i = 0; i<6; i++){
         //Takes the array of events -> flattened array of hours
-        week[i].makeFlat(minimizeSize);
+
+        if(i == 5){
+            //is sat, need to add sunday
+            week[i].makeFlat(true);
+            week[6].makeFlat(true);
+            week[i].flat.sun = week[6].flat
+        }else{
+            week[i].makeFlat(minimizeSize);
+        }
+        Week2D[Math.floor(i/2)][i%2] = week[i].flat;
         console.log(week[i])
     }
-    return week
+
+    console.log("2D week:");
+    console.log(Week2D);
+    return Week2D
     //handleBarsContext.push(week);
 }
 
