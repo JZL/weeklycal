@@ -73,7 +73,10 @@
 <body>
     <div id="auth">
         <button id="authorize-button" style="display: none;">Authorize</button>
-        <button id="signout-button" style="display: none;">Sign Out</button>
+        <div id="signedIn" style="display: none;">
+        <button id="signout-button">Sign Out</button>
+        <div id="userEmail"></div>
+        </div>
     </div>
     <script src="handlebars.min.js"></script>
     <script>

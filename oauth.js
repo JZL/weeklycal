@@ -29,7 +29,8 @@ function initClient() {
 	gapi.client.init({
 		discoveryDocs: DISCOVERY_DOCS,
 		clientId: CLIENT_ID,
-		scope: SCOPES
+		scope: SCOPES,
+        fetch_basic_profile: true
 	}).then(function() {
 		// Listen for sign-in state changes.
 		gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
@@ -49,7 +50,11 @@ function updateSigninStatus(isSignedIn) {
 	if (isSignedIn) {
 		console.log("Is signed in")
 		authorizeButton.style.display = 'none';
-		signoutButton.style.display = 'block';
+        var signedInDiv = document.getElementById("signedIn");
+        signedInDiv.style.display = "block";
+        document.getElementById("userEmail").innerText = "Hi, "+
+                gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
+
 		if(!fromCache){
 			listThisWeekEvents();
 		}
@@ -72,6 +77,7 @@ function handleAuthClick(event) {
  */
 function handleSignoutClick(event) {    
 	gapi.auth2.getAuthInstance().signOut();
+    document.getElementById("userEmail").innerText = ""
 }
 
 function listThisWeekEvents() {
