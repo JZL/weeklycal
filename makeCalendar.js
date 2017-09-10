@@ -62,12 +62,14 @@ function makeWeeklyCalendar(twoWeekEvents, mondays){
     console.log("starting")
         console.log(twoWeekEvents);
     //TODO make var week1
-    week1 = makePaper(twoWeekEvents[0],  mondays[0], false);
-    week2 = makePaper(twoWeekEvents[1],  mondays[1], true);
+    getSharplesFood(function(sharplesWeek){
+        week1 = makePaper(twoWeekEvents[0],  mondays[0], false, sharplesWeek);
+        week2 = makePaper(twoWeekEvents[1],  mondays[1], true);
 
-    var week1HTML = mainTable_template(week1);
-    var week2HTML = mainTable_template(week2);
-    document.getElementById("week1").innerHTML = week1HTML+"<div class='page-break'></div>"+week2HTML;
+        var week1HTML = mainTable_template(week1);
+        var week2HTML = mainTable_template(week2);
+        document.getElementById("week1").innerHTML = week1HTML+"<div class='page-break'></div>"+week2HTML;
+    })
     //var week2 = makePaper(twoWeekEvents[1],   mondays[1], true); //for backpage, true = condensed
 }
 /*[
@@ -173,6 +175,12 @@ function day(date){
         lastEnd: null     //Time always > 0 so safe
     }
 
+    this.sharplesWeek;
+
+    this.addSharples = function(sharplesText){
+        this.sharplesWeek = sharplesText;
+    }
+
     this.addTODO = function(anEvent){
         this.todo.push(anEvent)
     }
@@ -202,6 +210,7 @@ function day(date){
         this.flattenTimedEvents(minimizeSize);
         this.flat.due            = this.flattenDue();
         this.flat.TODO           = this.flattenTODO();
+        this.flat.sharples       = this.sharplesWeek;
     }
     this.flattenDue = function(){
         return flattenDueOrTODO("Due", this.due)
@@ -349,7 +358,7 @@ function day(date){
 }
 
 
-function makePaper(events, startDate, minimizeSize) {
+function makePaper(events, startDate, minimizeSize, sharplesWeek) {
     console.log("make paper")
     var week = [];
     for(var i = 0; i<7; i++){
@@ -407,28 +416,35 @@ function makePaper(events, startDate, minimizeSize) {
     [],
     []
     ];
-    //Only want normal (weekdays)
-    //TODO remove
     w = week
-    for(var i = 0; i<6; i++){
+    //Only want normal (weekdays)
+    for(var i = 0; i<7; i++){
         //Takes the array of events -> flattened array of hours
+        if(sharplesWeek){
+            //Sharples goes Sun->Sat, myWeek goes Mon->Sun so +1 and rollover
+            //Sharples week is [sharples DOW text, sharples meal text]
+            //TODO technically, the sunday will be for the week past
+            week[i].addSharples(sharplesWeek[(i+1)%7][1])
+        }
 
-        if(i == 5){
+        if(i == 5||i==6){
             //is sat, need to add sunday
             week[i].makeFlat(true);
-            week[6].makeFlat(true);
-            week[i].flat.sun = week[6].flat
+            if(i == 6){
+                week[5].flat.sun = week[6].flat
+            }
         }else{
             week[i].makeFlat(minimizeSize);
         }
-        Week2D[Math.floor(i/2)][i%2] = week[i].flat;
-        console.log(week[i])
+        if(i<6){
+            Week2D[Math.floor(i/2)][i%2] = week[i].flat;
+            console.log(week[i])
+        }
     }
 
     console.log("2D week:");
     console.log(Week2D);
     return Week2D
-    //handleBarsContext.push(week);
 }
 
 //function getMonday(d) {

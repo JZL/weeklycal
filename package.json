@@ -4,6 +4,7 @@
   "description": "",
   "main": "makeCalendar.js",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
     "dustjs-helpers": "^1.7.3",
     "dustjs-linkedin": "^2.7.5",
     "handlebars": "^4.0.10"
