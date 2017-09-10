@@ -96,7 +96,7 @@ function listThisWeekEvents() {
 			path: 'https://www.googleapis.com/calendar/v3/calendars/'+encodeURIComponent(ID)+'/events',
 			params: {
 				'timeMin': monday.toISOString(),
-				'timeMax': endWeek2Date.toISOString(), //Exclusive time TODO
+				'timeMax': endWeek2Date.toISOString(), //Exclusive time but ONLY for start
 				'showDeleted': false,
 				'singleEvents': true,
 				'orderBy': 'startTime'
@@ -144,8 +144,8 @@ function listThisWeekEvents() {
 		//Need to collapse date or datetime to one variable to split into weeks
 					if (event.start.date) {
 		//Is all-day
-						startEnd[0] = addDaysDate(new Date(event.start.date), 1); //when browsers (chrome) interpret the date string, they are 1 day behind
-						startEnd[1] = addDaysDate(new Date(event.end.  date), 1); //when browsers (chrome) interpret the date string, they are 1 day behind
+						startEnd[0] = dateFromAllDayStr(event.start.date); //when browsers (chrome) interpret the date string, they are 1 day behind
+						startEnd[1] = dateFromAllDayStr(event.end.  date); //when browsers (chrome) interpret the date string, they are 1 day behind
 						allDayOrTimed = "allDay"
 					}else{
 						startEnd[0] = new Date(event.start.dateTime);
@@ -163,8 +163,8 @@ function listThisWeekEvents() {
                         var specificEndDate = new Date(specificStartTime);
                         specificEndDate.setHours(startEnd[1].getHours(), startEnd[1].getMinutes())
                         var specificEndTime = specificEndDate.getTime();
-                        if(specificEndDate.getTime() >= endWeek2Date.getTime()){
-                            break;
+                        if(specificStartTime <= monday.getTime() || specificEndTime >= endWeek2Date.getTime()){
+                            continue; //Stop there
                         }
                         if(specificStartTime>=monday.getTime() && specificEndTime <startWeek2.getTime()){
                             //In 1st week
@@ -175,6 +175,8 @@ function listThisWeekEvents() {
                             dayIndex = daysBetween(startWeek2, specificStartDate);
                             weekEventIndex = 1
                         }else{
+                                console.log("specificStartTime: ");
+                                console.log(specificStartTime);
                             throw "Event: "+event.summary+"'s date: "+event.start.date+" is not in either 2 weeks"
                         }
                         //Need to copy startEnd by value
@@ -193,4 +195,10 @@ function listThisWeekEvents() {
 		console.log("whole error: ")
 		console.log(reason)
 	})
+}
+
+function dateFromAllDayStr(dateStr){
+    return new Date(dateStr.substring(0,4), //2017
+                    parseInt(dateStr.substring(5,7))-1, //09, needs to be 0 indexed
+                    dateStr.substring(8, 10)) //02
 }
