@@ -372,6 +372,9 @@ function makePaper(events, startDate, minimizeSize, sharplesWeek) {
             bold = true; 
             gCalEvent.event.summary = gCalEvent.event.summary.replace(/^!*/, "");
         }
+        if(gCalEvent.event.location){
+            gCalEvent.event.summary+="@"+gCalEvent.event.location
+        }
 
         var event = new timedEvent(gCalEvent.event.summary, bold, gCalEvent.startEnd);
 
