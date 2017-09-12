@@ -9,7 +9,7 @@ function httpGetAsync(theUrl, callback){
 }
 
 function getSharplesFood(callback){
-    httpGetAsync("http://cors-anywhere.herokuapp.com/https://dash.swarthmore.edu/weekly-menu", function(txt){
+    httpGetAsync("https://cors-anywhere.herokuapp.com/https://dash.swarthmore.edu/weekly-menu", function(txt){
         var retFoodWeek = []
             var parser=new DOMParser();
         var htmlDoc=parser.parseFromString(txt, "text/html");
