@@ -39,7 +39,7 @@
             width: 1%;
         }
         .sharp{
-            font-size: 4px;
+            font-size: 5px;
             font-family: sans-serif;
         }
 
@@ -63,16 +63,12 @@
                         display: none;
                     }
                     .page-break { display: block; page-break-before: always;  }
-                    #auth{
-                        display: none;
-                    }
-
         }
     </style>
 </head>
 
 <body>
-    <div id="auth">
+    <div id="auth" class="not_print">
         <button id="authorize-button" style="display: none;">Authorize</button>
         <div id="signedIn" style="display: none;">
         <button id="signout-button">Sign Out</button>
