@@ -134,7 +134,7 @@ function timedEvent(summary, isBold, dates){ //times = [startTime, endTime]
             min = this.endHM%100;
         }else{
             //If printing a timed event in due/todo
-           return Math.floor(this.startHM/100)+":"+toPaddedStr(this.startHM%100)+" "+
+           return Math.floor(this.startHM/100)+":"+toPaddedStr(this.startHM%100)+"-"+
                Math.floor(this.endHM/100)+":"+toPaddedStr(this.endHM%100)+" "+
                this.summary;
         }
