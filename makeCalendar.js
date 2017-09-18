@@ -621,3 +621,9 @@ function doTe(){
         var body = document.getBody().clear()
         body.appendTable([[getTasks().concat(starredToTask(), todoCal()).sort().join("\n"), DocumentApp.openById("1BK_iIyOSTEZ9RG97kbrhEVipBp6tWOagHFJBOKMsqzA").getBody().getText()]]).setBorderColor("#FFFFFF").setFontFamily("Droid Sans Mono").setFontSize(8)
 }
+
+function back1Week(){
+    START_DATE = new Date(new Date().getTime() - 4*24*60*60*1000);
+    //Redo all
+    listThisWeekEvents();
+}
