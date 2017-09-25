@@ -202,7 +202,7 @@ function day(date){
         if(startEndHours[0]< this.timedEventTimes.firstStart){
             this.timedEventTimes.firstStart = startEndHours[0];
         }
-        if(startEndHours[1]< this.timedEventTimes.lastEnd){
+        if(startEndHours[1]> this.timedEventTimes.lastEnd){
             this.timedEventTimes.lastEnd = startEndHours[1]
         }
     }
