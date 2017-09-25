@@ -18,12 +18,14 @@ function getSharplesFood(callback){
             var dayHead = weeks[i].children[0].children[0].children[0].children[0].firstChild.textContent
             var dayMealArr = weeks[i].children[0].children[1].querySelectorAll(".event-body");
             var dayMealStr = ""
-                for(var j = 0; j<dayMealArr.length;j++){
+            //For all break, lunch, dinner:
+            //for(var j = 0; j<dayMealArr.length;j++){
+            //For just dinner:
+            j = dayMealArr.length-1;
                     var dayStrTmp = replaceUneededSharples(dayMealArr[j].innerText)
                     if(dayStrTmp!=""){
                         dayMealStr += dayStrTmp.replace(/\n/g, "<br>-&nbsp;")+"<hr>\n";
                     }
-                }
 
             console.log(typeof dayHead);
             dayHead = replaceUneededSharples(dayHead);
