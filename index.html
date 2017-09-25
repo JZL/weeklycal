@@ -12,6 +12,9 @@
         table {
             border-collapse: collapse;
         }
+        .mainTable:nth-of-type(2){
+            border-style: dotted;
+        }
         
         
         td {
@@ -19,7 +22,7 @@
             padding: 0px;
         }
         
-        #mainTable > tbody > tr > td {
+        .mainTable > tbody > tr > td {
             border: black solid 1px;
         }
         table,
@@ -83,7 +86,7 @@
     <script>
     </script>
     <script id="maintable_template" type="text/x-handlebars-template">
-        <table id="mainTable">
+        <table class="mainTable">
             <!-- TODO: set bordercolor #000000, #D3D3D3 -->
             <tbody>
                 {{#each this}}
