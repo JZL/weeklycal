@@ -26,8 +26,7 @@ function getSharplesFood(callback){
                     if(dayStrTmp!=""){
                         dayMealStr += dayStrTmp.replace(/\n/g, "<br>-&nbsp;")+"<hr>\n";
                     }
-
-            console.log(typeof dayHead);
+            dayMealStr = "-&nbsp;"+dayMealStr;
             dayHead = replaceUneededSharples(dayHead);
             dayMealStr = replaceUneededSharples(dayMealStr);
             console.log(dayHead)
