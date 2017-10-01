@@ -240,9 +240,11 @@ function day(date){
     this.flattenAllDay = function(){
         var allDayStr = "";
         for(var i in this.allDayEvents){
-            allDayStr+="&nbsp"+this.allDayEvents[i].toHTMLString()+"<br>";
+            allDayStr+="&nbsp".repeat(2)+"-&nbsp;"+this.allDayEvents[i].toHTMLString()+"<br>";
         }
-        allDayStr+="&nbsp;"; //add space so have empty line
+        if(allDayStr!=""){
+            allDayStr+="&nbsp;"; //add space so have empty line
+        }
         //allDayStr = allDayStr.replace(/\<br\>$/, "");
         return allDayStr;
     }
