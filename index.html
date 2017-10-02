@@ -2,30 +2,30 @@
 
 <head>
     <style>
-*{
-    font-family: monospace;
-    font-size: 10px;
-}
+        * {
+            font-family: monospace;
+            font-size: 10px;
+        }
 
-        body{
-            margin:0px;
+        body {
+            margin: 0px;
         }
 
         table {
             border-collapse: collapse;
         }
 
-        .mainTable:nth-of-type(2){
+        .mainTable:nth-of-type(2) {
             border-style: dotted;
         }
-        
-        
+
+
         td {
             vertical-align: top;
             padding: 0px;
         }
-        
-        .mainTable > tbody > tr > td {
+
+        .mainTable>tbody>tr>td {
             border: black solid 1px;
         }
 
@@ -33,21 +33,21 @@
         .fw {
             width: 100%;
         }
-        
+
         .hw {
             width: 50%;
             position: relative;
         }
-        
+
         .qw {
             width: 75%;
         }
-        
-        .hour{
+
+        .hour {
             width: 1%;
         }
 
-        .sharp{
+        .sharp {
             font-size: 5px;
             font-family: sans-serif;
             float: right;
@@ -58,7 +58,7 @@
         }
 
 
-        hr{
+        hr {
             display: block;
             height: 1px;
             border: 0;
@@ -78,9 +78,9 @@
         }
 
         @media print {
-                    .not_print{
-                        display: none;
-                    }
+            .not_print {
+                display: none;
+            }
             .page-break {
                 display: block;
                 page-break-before: always;
@@ -93,9 +93,9 @@
     <div id="auth" class="not_print">
         <button id="authorize-button" style="display: none;">Authorize</button>
         <div id="signedIn" style="display: none;">
-        <button id="signout-button">Sign Out</button>
-        <button onclick="back1Week()">Back 1 Week</button>
-        <div id="userEmail"></div>
+            <button id="signout-button">Sign Out</button>
+            <button onclick="back1Week()">Back 1 Week</button>
+            <div id="userEmail"></div>
         </div>
     </div>
     <script src="handlebars.min.js"></script>
@@ -108,12 +108,12 @@
                 {{#each this}}
                 <tr>
                     {{#each this}}
-                        <td valign="top" class="hw">
-                            {{> dayCell}}
-                            {{#if this.sun}}
+                    <td valign="top" class="hw">
+                        {{> dayCell}}
+                        {{#if this.sun}}
                             <hr> {{#with this.sun}} {{> dayCell}} {{/with}}
-                            {{/if}}
-                        </td>
+                        {{/if}}
+                    </td>
                     {{/each}}
                 </tr>
                 {{/each}}
@@ -123,47 +123,47 @@
             <br><br>
         </div>
     </script>
-    <script id="dayCell_partial" type="text/x-handlebars-template">
+<script id="dayCell_partial" type="text/x-handlebars-template">
     <div class="sharp">{{{sharples}}}</div>
     <table style="float:left">
-            <tbody>
-                <tr>
+        <tbody>
+            <tr>
                 <td valign="top" style="text-align: center;" colspan="2">
                     {{this.dateString}}
                 </td>
                 <tr>
                     <td style="text-align: center;" colspan="2">
-                    {{{due}}}
+                        {{{due}}}
                     </td>
                 </tr>
-                </tr>
-                                {{>hourRow}}
-                <tr>
-                    <td style="text-align: center;" colspan="2">
+            </tr>
+            {{>hourRow}}
+            <tr>
+                <td style="text-align: center;" colspan="2">
                     {{{TODO}}}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </script>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
     <script id="hourRow_partial" type="text/x-handlebars-template">
         {{#each this.timedEvent}}
-            <tr>
-                <td class="hour">{{{this.[0]}}}</td>
-                <td class="qw">{{{this.[1]}}}</td>
-            </tr>
+        <tr>
+            <td class="hour">{{{this.[0]}}}</td>
+            <td class="qw">{{{this.[1]}}}</td>
+        </tr>
         {{/each}}
     </script>
     <div id="week1"></div>
 </body>
 
-    <!--
+<!--
         TODO: when get templates down, precompile and include dist-core.js
-    <script src="node_modules/dustjs-linkedin/dist/dust-full.js">
-    -->
-    <script src="makeCalendar.js"></script>
-    <script src="oauth.js"></script>
-    <script src="scrapeSharples.js"></script>
+        <script src="node_modules/dustjs-linkedin/dist/dust-full.js">
+-->
+<script src="makeCalendar.js"></script>
+<script src="oauth.js"></script>
+<script src="scrapeSharples.js"></script>
 <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()">
 </script>
 
