@@ -9,12 +9,21 @@ function httpGetAsync(theUrl, callback){
 }
 
 function getSharplesFood(callback){
+    /*
+     *If want to be faster:
+
+      callback(null)
+      return
+     */
     httpGetAsync("https://cors-anywhere.herokuapp.com/https://dash.swarthmore.edu/weekly-menu", function(txt){
         var retFoodWeek = []
             var parser=new DOMParser();
         var htmlDoc=parser.parseFromString(txt, "text/html");
         var weeks = htmlDoc.querySelectorAll(".weekday");
-        for(var i = 0; i<weeks.length;i++){
+        //1 bc sunday is for prev week (and is always pasta bar)
+        //Push 1 blank for sunday
+        retFoodWeek.push(["", ""]);
+        for(var i = 1; i<weeks.length;i++){
             var dayHead = weeks[i].children[0].children[0].children[0].children[0].firstChild.textContent
             var dayMealArr = weeks[i].children[0].children[1].querySelectorAll(".event-body");
             var dayMealStr = ""

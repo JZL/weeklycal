@@ -6,12 +6,15 @@
     font-family: monospace;
     font-size: 10px;
 }
+
         body{
             margin:0px;
         }
+
         table {
             border-collapse: collapse;
         }
+
         .mainTable:nth-of-type(2){
             border-style: dotted;
         }
@@ -25,6 +28,7 @@
         .mainTable > tbody > tr > td {
             border: black solid 1px;
         }
+
         table,
         .fw {
             width: 100%;
@@ -32,6 +36,7 @@
         
         .hw {
             width: 50%;
+            position: relative;
         }
         
         .qw {
@@ -41,9 +46,15 @@
         .hour{
             width: 1%;
         }
+
         .sharp{
             font-size: 5px;
             font-family: sans-serif;
+            float: right;
+            position: absolute;
+            right: 0;
+            width: 30%;
+            text-align: right;
         }
 
 
@@ -60,7 +71,9 @@
         }
 
         @media all {
-                    .page-break { display: none;  }
+            .page-break {
+                display: none;
+            }
 
         }
 
@@ -68,7 +81,10 @@
                     .not_print{
                         display: none;
                     }
-                    .page-break { display: block; page-break-before: always;  }
+            .page-break {
+                display: block;
+                page-break-before: always;
+            }
         }
     </style>
 </head>
@@ -95,10 +111,7 @@
                         <td valign="top" class="hw">
                             {{> dayCell}}
                             {{#if this.sun}}
-                                <hr>
-                                {{#with this.sun}}
-                                    {{> dayCell}}
-                                {{/with}}
+                            <hr> {{#with this.sun}} {{> dayCell}} {{/with}}
                             {{/if}}
                         </td>
                     {{/each}}
@@ -111,28 +124,20 @@
         </div>
     </script>
     <script id="dayCell_partial" type="text/x-handlebars-template">
-        <table>
+    <div class="sharp">{{{sharples}}}</div>
+    <table style="float:left">
             <tbody>
+                <tr>
+                <td valign="top" style="text-align: center;" colspan="2">
+                    {{this.dateString}}
+                </td>
                 <tr>
                     <td style="text-align: center;" colspan="2">
                     {{{due}}}
                     </td>
                 </tr>
-                <tr>
-                    <td valign = "top" class="qw">
-                        <table>
-                            <tbody>
-                <tr>
-                    <td valign="top" style="text-align: center;" colspan="2">
-                        {{this.dateString}}
-                    </td>
                 </tr>
                                 {{>hourRow}}
-                            </tbody>
-                        </table>
-                    </td>
-                    <td class="sharp">{{{sharples}}}</td>
-                </tr>
                 <tr>
                     <td style="text-align: center;" colspan="2">
                     {{{TODO}}}

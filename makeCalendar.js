@@ -375,6 +375,12 @@ function makePaper(events, startDate, minimizeSize, sharplesWeek) {
             gCalEvent.event.summary = gCalEvent.event.summary.replace(/^!*/, "");
         }
         if(gCalEvent.event.location){
+            if(gCalEvent.event.location.indexOf("*Swarthmore College - ")== 0 ){
+                console.log("shorter test")
+                //Copied from swarthmore calendar, make a lot shorter
+                //+2 for "- " space
+                gCalEvent.event.location = gCalEvent.event.location.substring(gCalEvent.event.location.lastIndexOf("-")+2)
+            }
             gCalEvent.event.summary+="@"+gCalEvent.event.location
         }
 
