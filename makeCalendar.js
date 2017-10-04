@@ -60,7 +60,7 @@ function makeWeeklyCalendar(twoWeekEvents, mondays){
 
 
     console.log("starting")
-        console.log(twoWeekEvents);
+    console.log(twoWeekEvents);
     //TODO make var week1
     getSharplesFood(function(sharplesWeek){
         week1 = makePaper(twoWeekEvents[0],  mondays[0], false, sharplesWeek);
@@ -159,7 +159,7 @@ function day(date){
     this.date = date;
     this.dow = days_of_weekArr[this.date.getDay()];
     this.getDateStr = function(){
-        console.log(this.date);
+        //console.log(this.date);
         return this.dow+" "+ (this.date.getMonth()+1)+"/"+this.date.getDate();
     }
     this.flat.dateString = this.getDateStr();
@@ -376,7 +376,6 @@ function makePaper(events, startDate, minimizeSize, sharplesWeek) {
         }
         if(gCalEvent.event.location){
             if(gCalEvent.event.location.indexOf("*Swarthmore College - ")== 0 ){
-                console.log("shorter test")
                 //Copied from swarthmore calendar, make a lot shorter
                 //+2 for "- " space
                 gCalEvent.event.location = gCalEvent.event.location.substring(gCalEvent.event.location.lastIndexOf("-")+2)
@@ -421,7 +420,6 @@ function makePaper(events, startDate, minimizeSize, sharplesWeek) {
 
             }
     }
-        console.log("flattened: ");
     var Week2D= [
     [],
     [],
@@ -449,7 +447,7 @@ function makePaper(events, startDate, minimizeSize, sharplesWeek) {
         }
         if(i<6){
             Week2D[Math.floor(i/2)][i%2] = week[i].flat;
-            console.log(week[i])
+            //console.log(week[i])
         }
     }
 

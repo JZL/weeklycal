@@ -1,8 +1,14 @@
 function httpGetAsync(theUrl, callback){
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
             callback(xmlHttp.responseText);
+        }else{
+           callback(null); 
+        }
+    }
+    xmlHttp.onerror = function(){
+        callback(null);
     }
     xmlHttp.open("GET", theUrl, true); // true for asynchronous 
     xmlHttp.send(null);
@@ -16,6 +22,12 @@ function getSharplesFood(callback){
       return
      */
     httpGetAsync("https://cors-anywhere.herokuapp.com/https://dash.swarthmore.edu/weekly-menu", function(txt){
+        if(txt == null){
+            //Error
+            console.log("Couldn't get response, sending null for sharples")
+            callback(null)
+            return;
+        }
         var retFoodWeek = []
             var parser=new DOMParser();
         var htmlDoc=parser.parseFromString(txt, "text/html");
