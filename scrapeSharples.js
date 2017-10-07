@@ -45,7 +45,7 @@ function getSharplesFood(callback){
             j = dayMealArr.length-1;
                     var dayStrTmp = replaceUneededSharples(dayMealArr[j].innerText)
                     if(dayStrTmp!=""){
-                        dayMealStr += dayStrTmp.replace(/\n/g, "<br>-&nbsp;")+"<hr>\n";
+                        dayMealStr += dayStrTmp.replace(/\n/g, " -&nbsp;")+"<hr>\n";
                     }
             dayMealStr = "-&nbsp;"+dayMealStr;
             dayHead = replaceUneededSharples(dayHead);
