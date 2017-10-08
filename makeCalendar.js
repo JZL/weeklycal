@@ -159,7 +159,6 @@ function day(date){
     this.date = date;
     this.dow = days_of_weekArr[this.date.getDay()];
     this.getDateStr = function(){
-        //console.log(this.date);
         return this.dow+" "+ (this.date.getMonth()+1)+"/"+this.date.getDate();
     }
     this.flat.dateString = this.getDateStr();
@@ -361,7 +360,6 @@ function day(date){
 
 
 function makePaper(events, startDate, minimizeSize, sharplesWeek) {
-    console.log("make paper")
     var week = [];
     for(var i = 0; i<7; i++){
         week.push(new day(addDaysDate(startDate, i)));
@@ -447,7 +445,6 @@ function makePaper(events, startDate, minimizeSize, sharplesWeek) {
         }
         if(i<6){
             Week2D[Math.floor(i/2)][i%2] = week[i].flat;
-            //console.log(week[i])
         }
     }
 

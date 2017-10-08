@@ -27,25 +27,28 @@ function getSharplesFood(callback){
             callback(null)
             return;
         }
-        var retFoodWeek = []
-            var parser=new DOMParser();
+        var retFoodWeek = [];
+        var parser=new DOMParser();
         var htmlDoc=parser.parseFromString(txt, "text/html");
         var weeks = htmlDoc.querySelectorAll(".weekday");
         //1 bc sunday is for prev week (and is always pasta bar)
         //Push 1 blank for sunday
         retFoodWeek.push(["", ""]);
         for(var i = 1; i<weeks.length;i++){
-            var dayHead = weeks[i].children[0].children[0].children[0].children[0].firstChild.textContent
-            var dayMealArr = weeks[i].children[0].children[1].querySelectorAll(".event-body");
+                var dayHead = weeks[i].children[0].children[0].children[0].children[0].firstChild.textContent;
+                var dayMealArr = weeks[i].children[0].children[1].querySelectorAll(".event-body");
             var dayMealStr = ""
             //For all break, lunch, dinner:
             //for(var j = 0; j<dayMealArr.length;j++){
-            //For just dinner:
+            //For just dinner (usually what want):
             j = dayMealArr.length-1;
-                    var dayStrTmp = replaceUneededSharples(dayMealArr[j].innerText)
-                    if(dayStrTmp!=""){
-                        dayMealStr += dayStrTmp.replace(/\n/g, " -&nbsp;")+"<hr>\n";
-                    }
+            var dayMealText = "";
+            if(dayMealArr.length != 0){
+                console.log("Error reading sharples menu, could be holiday/etc");
+                dayMealText = dayMealArr[j].innerText;
+            }
+            dayMealStr += replaceUneededSharples(dayMealText).replace(/\n/g, " -&nbsp;")+"<hr>\n";
+            //}
             dayMealStr = "-&nbsp;"+dayMealStr;
             dayHead = replaceUneededSharples(dayHead);
             dayMealStr = replaceUneededSharples(dayMealStr);
