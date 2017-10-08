@@ -64,7 +64,7 @@
             height: 1px;
             border: 0;
             border-top: 1px solid black;
-            padding: 0px;
+            padding: 1px;
             -webkit-margin-start: 0px;
             -webkit-margin-end: 0px;
             -webkit-margin-before: 0px;
@@ -87,6 +87,22 @@
                 page-break-before: always;
             }
         }
+        /* Sunday parent container -> relative so sunday can be abs positioned
+         * at the bottom
+         */
+        #weeks > table > tbody > tr:nth-child(3) > td:nth-child(2){
+            position: relative;
+        }
+        .sun{
+            position:absolute;
+            bottom: 0;
+            width: 99%;
+        }
+
+        .due, .todo{
+            text-align: left;
+        }
+
     </style>
 </head>
 
@@ -112,7 +128,9 @@
                     <td valign="top" class="hw">
                         {{> dayCell}}
                         {{#if this.sun}}
-                            <hr> {{#with this.sun}} {{> dayCell}} {{/with}}
+                            <div class="sun">
+                                <hr> {{#with this.sun}} {{> dayCell}} {{/with}}
+                            </div>
                         {{/if}}
                     </td>
                     {{/each}}
@@ -133,14 +151,14 @@
                     {{this.dateString}}
                 </td>
                 <tr>
-                    <td style="text-align: center;" colspan="2">
+                    <td class="due" colspan="2">
                         {{{due}}}
                     </td>
                 </tr>
             </tr>
             {{>hourRow}}
             <tr>
-                <td style="text-align: center;" colspan="2">
+                <td class="todo" colspan="2">
                     {{{TODO}}}
                 </td>
             </tr>
@@ -155,7 +173,7 @@
         </tr>
         {{/each}}
     </script>
-    <div id="week1"></div>
+    <div id="weeks"></div>
 </body>
 
 <!--

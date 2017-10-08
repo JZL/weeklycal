@@ -68,7 +68,7 @@ function makeWeeklyCalendar(twoWeekEvents, mondays){
 
         var week1HTML = mainTable_template(week1);
         var week2HTML = mainTable_template(week2);
-        document.getElementById("week1").innerHTML = week1HTML+"<div class='page-break'></div>"+week2HTML;
+        document.getElementById("weeks").innerHTML = week1HTML+"<div class='page-break'></div>"+week2HTML;
     })
     //var week2 = makePaper(twoWeekEvents[1],   mondays[1], true); //for backpage, true = condensed
 }
@@ -225,11 +225,11 @@ function day(date){
         for(var i in  doOrTodo){
             //Overloading should take care if it is an hourly or daily event
             //square box  https://www.compart.com/en/unicode/U+25A1
-            str += (str == "" ? "" :INDENT_SPACES+indent)+"\u25A1 "+
+            str += (str == "" ? "" :INDENT_SPACES.repeat(2))+"\u25A1 "+
                 doOrTodo[i].toHTMLString()+"<br>";
         }
         if(str!=""){
-            str = indent+doOrTodoStr+": "+str;
+            str = doOrTodoStr+": "+str;
         }
         return str;
     }
@@ -239,7 +239,7 @@ function day(date){
     this.flattenAllDay = function(){
         var allDayStr = "";
         for(var i in this.allDayEvents){
-            allDayStr+="&nbsp".repeat(2)+"-&nbsp;"+this.allDayEvents[i].toHTMLString()+"<br>";
+            allDayStr+="&nbsp".repeat(3)+"-&nbsp;"+this.allDayEvents[i].toHTMLString()+"<br>";
         }
         if(allDayStr!=""){
             allDayStr+="&nbsp;"; //add space so have empty line
@@ -360,22 +360,24 @@ function day(date){
 
 
 function makePaper(events, startDate, minimizeSize, sharplesWeek) {
+    console.log("making paper");
     var week = [];
     for(var i = 0; i<7; i++){
         week.push(new day(addDaysDate(startDate, i)));
     }
+    //TODO could refactor to combine timedEvent and allDay event processing
     for(var i in events.timedEvent){
         var gCalEvent = events.timedEvent[i];
         var bold = false;
         if(BOLD_CALS.indexOf(gCalEvent.cal)!=-1||
-                gCalEvent.event.summary[0] == "!"){
+            gCalEvent.event.summary[0] == "!"){
             bold = true; 
             gCalEvent.event.summary = gCalEvent.event.summary.replace(/^!*/, "");
         }
         if(gCalEvent.event.location){
             if(gCalEvent.event.location.indexOf("*Swarthmore College - ")== 0 ){
                 //Copied from swarthmore calendar, make a lot shorter
-                //+2 for "- " space
+                //+2 for "- "
                 gCalEvent.event.location = gCalEvent.event.location.substring(gCalEvent.event.location.lastIndexOf("-")+2)
             }
             gCalEvent.event.summary+="@"+gCalEvent.event.location

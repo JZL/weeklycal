@@ -153,7 +153,7 @@ function listThisWeekEvents() {
 						allDayOrTimed = "timedEvent";
 					}
                     var numDaysSpan = daysBetween(startEnd[0], startEnd[1]);
-                    console.log("numDaysSpan: "+numDaysSpan);
+                    //console.log("numDaysSpan: "+numDaysSpan);
                     //Added in case of multi day events
                     //Needs to be <= because, for instance, when on same day, will be = 0 and want to run once
                     for(var day = 0; day<=numDaysSpan; day++){
