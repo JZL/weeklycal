@@ -60,7 +60,6 @@ function makeWeeklyCalendar(twoWeekEvents, mondays){
 
 
     console.log("starting")
-    console.log(twoWeekEvents);
     //TODO make var week1
     getSharplesFood(function(sharplesWeek){
         week1 = makePaper(twoWeekEvents[0],  mondays[0], false, sharplesWeek);
@@ -403,6 +402,14 @@ function makePaper(events, startDate, minimizeSize, sharplesWeek) {
         if(BOLD_CALS.indexOf(gCalEvent.cal)!=-1||gCalEvent.event.summary[0] == "!"){
             bold = true; 
             gCalEvent.event.summary = gCalEvent.event.summary.replace(/^!*/, "");
+        }
+        if(gCalEvent.event.location){
+            if(gCalEvent.event.location.indexOf("*Swarthmore College - ")== 0 ){
+                //Copied from swarthmore calendar, make a lot shorter
+                //+2 for "- "
+                gCalEvent.event.location = gCalEvent.event.location.substring(gCalEvent.event.location.lastIndexOf("-")+2)
+            }
+            gCalEvent.event.summary+="@"+gCalEvent.event.location
         }
 
         var event = new Event(gCalEvent.event.summary, bold)
