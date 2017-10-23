@@ -119,6 +119,10 @@ function timedEvent(summary, isBold, dates){ //times = [startTime, endTime]
         this.indentLevel = level;
     }
 
+    this.getIndentLevel = function(){
+        return this.indentLevel;
+    }
+
     this.toHTMLString = function(startOrEnd){
         var arrow;
         if(startOrEnd == 0){
@@ -304,14 +308,17 @@ function day(date){
                     for(var z = 0; z<minKeys.length;z++){
                         var minEvents = hourEvents[minKeys[z]];
                         for(var i = 0; i<minEvents.length;i++){
+                            //If [1] == 0, then is a start, == 1 is an end
                             if(minEvents[i][1] == 0){
-                                //start
+                                //is a start
                                 //Want to go before ++ because, for instance,
                                 //the first event should be at 0, not 1
                                 minEvents[i][0].setIndentLevel(numEventsDeep);
-                                numEventsDeep++
+                                //Take into account the indent level so for "|", knows where should be
+                                numEventsDeep += 1+minEvents[i][0].getIndentLevel();
                             }else{
-                                numEventsDeep-- 
+                                //is an end
+                                numEventsDeep -= 1+minEvents[i][0].getIndentLevel();
                             }
                             hourEventStr+=minEvents[i][0].toHTMLString(minEvents[i][1])+"<br>";
                         }
