@@ -72,10 +72,6 @@
         }
 
         @media all {
-            .page-break {
-                display: none;
-            }
-
         }
 
         @media print {
@@ -103,10 +99,27 @@
             text-align: left;
         }
 
+		#psuedo-body {
+			background: linear-gradient(90deg, white 10px, transparent 1%) center,
+				linear-gradient(white 10px, transparent 1%) center,
+				grey;
+			background-size: 11px 11px;
+			-webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
+			color-adjust: exact !important;                 /*Firefox*/
+		}
+
+		.mainTable{
+			background-color: white;
+			-webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
+			color-adjust: exact !important;                 /*Firefox*/
+		}
+
     </style>
 </head>
 
 <body>
+		<!-- For dots, if apply to background, chrome won't print -->
+		<div id="psuedo-body">
     <div id="auth" class="not_print">
         <button id="authorize-button" style="display: none;">Authorize</button>
         <div id="signedIn" style="display: none;">
@@ -140,6 +153,7 @@
                 {{/each}}
             </tbody>
         </table>
+		<div class="dotted"></div>
         <div class="not_print">
             <br><br>
         </div>
@@ -176,6 +190,9 @@
         {{/each}}
     </script>
     <div id="weeks"></div>
+			<!--Insert page break here so dots extend to end of page -->
+			<div class="page-break"></div>
+		</div>
 </body>
 
 <!--
