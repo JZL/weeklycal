@@ -1,11 +1,11 @@
 <html>
 
-<head>
-    <style>
-        * {
-            font-family: monospace;
-            font-size: 10px;
-        }
+    <head>
+        <style>
+* {
+    font-family: monospace;
+    font-size: 10px;
+}
 
         body {
             margin: 0px;
@@ -99,42 +99,42 @@
             text-align: left;
         }
 
-		#psuedo-body {
-			background: linear-gradient(90deg, white 10px, transparent 1%) center,
-				linear-gradient(white 10px, transparent 1%) center,
-				grey;
-			background-size: 11px 11px;
-			-webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
-			color-adjust: exact !important;                 /*Firefox*/
-		}
+        #psuedo-body {
+            background: linear-gradient(90deg, white 10px, transparent 1%) center,
+                linear-gradient(white 10px, transparent 1%) center,
+                grey;
+            background-size: 11px 11px;
+            -webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
+            color-adjust: exact !important;                 /*Firefox*/
+        }
 
-		.mainTable{
-			background-color: white;
-			-webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
-			color-adjust: exact !important;                 /*Firefox*/
-		}
+        .mainTable{
+            background-color: white;
+            -webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
+            color-adjust: exact !important;                 /*Firefox*/
+        }
 
-    </style>
-</head>
+        </style>
+    </head>
 
-<body>
-		<!-- For dots, if apply to background, chrome won't print -->
-		<div id="psuedo-body">
-    <div id="auth" class="not_print">
-        <button id="authorize-button" style="display: none;">Authorize</button>
-        <div id="signedIn" style="display: none;">
-            <button id="signout-button">Sign Out</button>
-            <button onclick="back1Week()">Back 1 Week</button>
-            <div id="userEmail"></div>
-					<b><u>Make sure to check back of paper</u></b>
-					<br>
-        </div>
-    </div>
-    <script src="handlebars.min.js"></script>
-    <script>
-    </script>
-    <script id="maintable_template" type="text/x-handlebars-template">
-        <table class="mainTable">
+    <body>
+        <!-- For dots, if apply to background, chrome won't print -->
+        <div id="psuedo-body">
+            <div id="auth" class="not_print">
+                <button id="authorize-button" style="display: none;">Authorize</button>
+                <div id="signedIn" style="display: none;">
+                    <button id="signout-button">Sign Out</button>
+                    <button onclick="back1Week()">Back 1 Week</button>
+                    <div id="userEmail"></div>
+                    <b><u>Make sure to check back of paper</u></b>
+                    <br>
+                </div>
+            </div>
+            <script src="handlebars.min.js"></script>
+            <script>
+            </script>
+            <script id="maintable_template" type="text/x-handlebars-template">
+<table class="mainTable">
             <!-- TODO: set bordercolor #000000, #D3D3D3 -->
             <tbody>
                 {{#each this}}
@@ -153,13 +153,13 @@
                 {{/each}}
             </tbody>
         </table>
-		<div class="dotted"></div>
+        <div class="dotted"></div>
         <div class="not_print">
             <br><br>
         </div>
-    </script>
-<script id="dayCell_partial" type="text/x-handlebars-template">
-    <div class="sharp">{{{sharples}}}</div>
+            </script>
+            <script id="dayCell_partial" type="text/x-handlebars-template">
+<div class="sharp">{{{sharples}}}</div>
     <table style="float:left">
         <tbody>
             <tr>
@@ -180,22 +180,22 @@
             </tr>
         </tbody>
     </table>
-</script>
-    <script id="hourRow_partial" type="text/x-handlebars-template">
-        {{#each this.timedEvent}}
+            </script>
+            <script id="hourRow_partial" type="text/x-handlebars-template">
+{{#each this.timedEvent}}
         <tr>
             <td class="hour">{{{this.[0]}}}</td>
             <td class="qw">{{{this.[1]}}}</td>
         </tr>
         {{/each}}
-    </script>
-    <div id="weeks"></div>
-			<!--Insert page break here so dots extend to end of page -->
-			<div class="page-break"></div>
-		</div>
-</body>
+            </script>
+            <div id="weeks"></div>
+            <!--Insert page break here so dots extend to end of page -->
+            <div class="page-break"></div>
+        </div>
+    </body>
 
-<!--
+    <!--
         TODO: when get templates down, precompile and include dist-core.js
         <script src="node_modules/dustjs-linkedin/dist/dust-full.js">
 -->
