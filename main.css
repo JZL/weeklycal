@@ -44,7 +44,7 @@ table,
 }
 
 .sharp {
-    font-size: 5px;
+    font-size: 6px;
     font-family: sans-serif;
     float: right;
     position: absolute;
@@ -85,11 +85,6 @@ hr {
     #weeks > table > tbody > tr:nth-child(3) > td:nth-child(2){
         position: relative;
     }
-    .sun{
-        position:absolute;
-        bottom: 0;
-        width: 99%;
-    }
 
     .due, .todo{
         text-align: left;
@@ -109,5 +104,3 @@ hr {
         -webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
         color-adjust: exact !important;                 /*Firefox*/
     }
-
-

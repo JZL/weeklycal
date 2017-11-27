@@ -385,6 +385,15 @@ function makePaper(events, startDate, minimizeSize, sharplesWeek) {
                 //Copied from swarthmore calendar, make a lot shorter
                 //+2 for "- "
                 gCalEvent.event.location = gCalEvent.event.location.substring(gCalEvent.event.location.lastIndexOf("-")+2)
+            }else if(gCalEvent.event.location == "Multiple Locations (See list below.)"){
+                //From swat calendar, need to look in description
+                //Get last line of description, remove "Room: "
+                var descSplit = gCalEvent.event.description.split(/\r?\n/);
+                for(var i in descSplit){
+                    if(descSplit[i].indexOf("Room: ")!=-1){
+                        gCalEvent.event.location = descSplit[i].replace("Room: ", "");
+                    }
+                }
             }
             gCalEvent.event.summary+="@"+gCalEvent.event.location
         }
