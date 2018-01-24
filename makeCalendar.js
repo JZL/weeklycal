@@ -19,6 +19,22 @@ var INDENT_SPACES = "&nbsp;".repeat(3);
 
 var BOLD_CALS = ["todo", "unusual", "due"]
 
+//Using my Swarthmore Scheduler, can get a list of locations (sorted by useage) with this bash one-liner
+//html-beautify schedule.js |grep '"rm"'|sed 's/ [0-9][0-9]*"//g'|sort|uniq -c|sort -nk1,1|sed 's/.*: "//'|tr -d '"'|sed -r "s/^|$/'/g"|sed 's/$/:| "",/'|column -ts"|"|copy"'"'"'
+var replacementLocations = {
+    "Science Center":                          "SC",
+    "Kohlberg":                                "KB",
+    'Black Cultural Center':                   "BCC",
+    'Whittier Hall':                           "WH",
+    'Hicks':                                   "HC",
+    'Martin':                                  "MRT",
+    'Beardsley':                               "BD",
+    'Pearson Hall':                            "PRSON",
+    'Trotter Hall':                            "TR",
+    'Lang Perf Arts Ctr':                      "LangPerf",
+
+}
+
 var newLines = "\n\n\n\n\n\n\n\n\n\n"
 var hourTable = [[8,""],[9,""],[10,""],[11,""],[12,""],[1,""],[2,""],[3,""],[4,""],[5,""]]
 var longestLength=16
@@ -394,6 +410,9 @@ function makePaper(events, startDate, minimizeSize, sharplesWeek) {
                         gCalEvent.event.location = descSplit[i].replace("Room: ", "");
                     }
                 }
+            }
+            for(var key in replacementLocations){
+                gCalEvent.event.location = gCalEvent.event.location.replace(key, replacementLocations[key])
             }
             gCalEvent.event.summary+="@"+gCalEvent.event.location
         }
