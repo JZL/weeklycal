@@ -33,6 +33,7 @@ var replacementLocations = {
     'Pearson Hall':                            "PRSON",
     'Trotter Hall':                            "TR",
     'Lang Perf Arts Ctr':                      "LangPerf",
+    'Ware Pool POOL':                          "Pool",
 
 }
 
