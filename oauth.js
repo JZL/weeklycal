@@ -146,6 +146,21 @@ function listThisWeekEvents() {
 		//Is all-day
 						startEnd[0] = dateFromAllDayStr(event.start.date); //when browsers (chrome) interpret the date string, they are 1 day behind
 						startEnd[1] = dateFromAllDayStr(event.end.  date); //when browsers (chrome) interpret the date string, they are 1 day behind
+
+                        /* Inconsistent whole day exclusivity (some all day
+                         * events start and end on the same date, others end on
+                         * the next day). There doesn't seem to be a way to
+                         * tell so I check if it is a start=end type event and
+                         * normalize it. On such calendar, could make a 2 day
+                         * event into 1 day event.
+                         *
+                         * Reported at
+                         * https://issuetracker.google.com/issues/65249740
+                         * but no response
+                         */
+
+                        startEnd[1] = addDaysDate(startEnd[1], -1) 
+
 						allDayOrTimed = "allDay"
 					}else{
 						startEnd[0] = new Date(event.start.dateTime);
@@ -153,6 +168,10 @@ function listThisWeekEvents() {
 						allDayOrTimed = "timedEvent";
 					}
                     var numDaysSpan = daysBetween(startEnd[0], startEnd[1]);
+                    if(allDayOrTimed == "allDay" && numDaysSpan == -1){
+                        startEnd[1] = startEnd[0]
+                        numDaysSpan = 1;
+                    }
                     //console.log("numDaysSpan: "+numDaysSpan);
                     //Added in case of multi day events
                     //Needs to be <= because, for instance, when on same day, will be = 0 and want to run once
@@ -163,7 +182,8 @@ function listThisWeekEvents() {
                         var specificEndDate = new Date(specificStartTime);
                         specificEndDate.setHours(startEnd[1].getHours(), startEnd[1].getMinutes())
                         var specificEndTime = specificEndDate.getTime();
-                        if(specificStartTime <= monday.getTime() || specificEndTime >= endWeek2Date.getTime()){
+                        if(specificStartTime < monday.getTime() || specificEndTime > endWeek2Date.getTime()){
+                            console.error(event.summary)
                             continue; //Stop there
                         }
                         if(specificStartTime>=monday.getTime() && specificEndTime <startWeek2.getTime()){
