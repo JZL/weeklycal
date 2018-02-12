@@ -128,6 +128,9 @@ function listThisWeekEvents() {
         r = response;
 		console.log("whole response: ");
 		console.log(response);
+        //Hash table to hold a key per event (title+start+end). If there is a duplicate, skip
+        var dontRepeat = {};
+        var eventKey;
 		for(var calRespi in response.result){
 			var calResp = response.result[calRespi];
 			if(calResp.status!=200){
@@ -200,7 +203,12 @@ function listThisWeekEvents() {
                             throw "Event: "+event.summary+"'s date: "+event.start.date+" is not in either 2 weeks"
                         }
                         //Need to copy startEnd by value
-                        twoWeekEvents[weekEventIndex][allDayOrTimed].push({event: event, startEnd: [specificStartDate, specificEndDate], dayIndex: dayIndex, cal: calRespi})
+                        //Long eventkey which captures all import event details, for checking duplicates
+                        eventKey = event.summary+specificStartTime+specificEndTime+weekEventIndex+allDayOrTimed;
+                        if(!dontRepeat.hasOwnProperty(eventKey)){
+                            twoWeekEvents[weekEventIndex][allDayOrTimed].push({event: event, startEnd: [specificStartDate, specificEndDate], dayIndex: dayIndex, cal: calRespi})
+                            dontRepeat[eventKey] = "";
+                        }
                     }
                 }
 			} else {
