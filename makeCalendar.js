@@ -11,7 +11,8 @@ var CALENDAR_IDS = {
     "todo":       "swarthmore.edu_d4fd5qnh3r5a7aqdc2hk9fk5ag@group.calendar.google.com",   //TODO ON
     "unusual":    "swarthmore.edu_dop0bh53409lheq23ell6ignqk@group.calendar.google.com",   //Series of Unusual Events
     "talk":       "cornell.edu_kfin5kaqcmmsu5msbh45lrac1g@group.calendar.google.com",      //Talk with people
-    "kehilah":    "swarthmore.edu_bbtctod0b54abd3n4kahoogndk@group.calendar.google.com"    //Kehilah
+    // "kehilah":    "swarthmore.edu_bbtctod0b54abd3n4kahoogndk@group.calendar.google.com"    //Kehilah old
+    "kehilah":    "swarthmore.edu_4lkfn78q1teb8jv6no8cu97mb8@group.calendar.google.com"    //Kehilah
     //"swarthmore.edu_g7nk3sf5s5ttg27r4cdjgpdtto@group.calendar.google.com", //Class Schedule Pre-SCCS
 }
 
