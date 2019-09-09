@@ -91,10 +91,10 @@ hr {
     }
 
     #psuedo-body {
-        background: linear-gradient(90deg, white 10px, transparent 1%) center,
-        linear-gradient(white 10px, transparent 1%) center,
+        background: linear-gradient(90deg, white 20px, transparent 1%) center,
+        linear-gradient(white 20px, transparent 1%) center,
         #c7c7c7;
-        background-size: 11px 11px;
+        background-size: 21px 21px;
         -webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
         color-adjust: exact !important;                 /*Firefox*/
     }
