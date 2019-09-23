@@ -395,6 +395,14 @@ function makePaper(events, startDate, minimizeSize, sharplesWeek) {
     for(var i in events.timedEvent){
         var gCalEvent = events.timedEvent[i];
         var bold = false;
+
+        //Remove unwanted kehilah all campus
+
+        if(gCalEvent.event.description &&  gCalEvent.event.description[gCalEvent.event.description.length-1] == "_"){
+            continue
+        }
+
+
         if(BOLD_CALS.indexOf(gCalEvent.cal)!=-1||
             gCalEvent.event.summary[0] == "!"){
             bold = true; 
